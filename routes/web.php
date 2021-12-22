@@ -60,8 +60,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['AdminCheck']], function() {
 Route::get('user/verify/{token}', [LoginAndRegisterController::class, 'VerifyUser']);
 // https://www.youtube.com/watch?v=mPWqz-bQpjs&list=PLGsHwf2MeBOja0l8Fk9EjZp3G9uzlsoJr&index=12
 Route::get('mail', function(){
-    $user/*['user']*/ = ['name' => 'haris', 'email' => 'hk3968833@gmail.com', 'token' => '123'];
-    dispatch(new \App\Jobs\SendEmailJob($user))->delay(now()->addSeconds(5));
-    echo 'Email sent';    
+    $user/*['user']*/ = ['name' => 'haris', 'email' => 'hk3968833@gmail.com', 'url' => url('/user/verify/1234')];
+    // \App\Events\MyE::dispatch($user);    
+    // echo 'Email sent';
+    $user = \App\User::find(6);
+    $user->notify(new \App\Notifications\NewUserRegistered);
 });
 

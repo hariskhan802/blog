@@ -26,6 +26,7 @@ class MyL
      */
     public function handle(MyE $event)
     {
-        //
+        // dd($event->user);
+        \App\Jobs\SendEmailJob::dispatch($event->user)->delay(now()->addSeconds(4));
     }
 }

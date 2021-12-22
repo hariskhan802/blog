@@ -63,11 +63,13 @@ class LoginAndRegisterController extends Controller
             $user = $user->toArray();
             $token = \Str::random(42);
             $user['token'] = $token;
+            $user['url'] = url('/user/verify/'.$user['token']);
             \App\VerifyUser::create(['user_id' => $user['id'], 'token' => $token]);
             /*\Mail::send('Mail.user-verify-email', $user, function($msg) use ($user) {
                 $msg->to($user['email'], $user['name'])->subject('Welcome to Blog');
             });*/
-            \Mail::to($user['email'])->send(new \App\Mail\VerifyEmail($user));
+            // \Mail::to($user['email'])->send(new \App\Mail\VerifyEmail($user));
+            dispatch(new \App\Jobs\SendEmailJob($user))->delay(now()->addSeconds(7));
             return back()->with('message', 'User Create Successfully');
             // return $request->input();
         }
