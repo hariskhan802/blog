@@ -22,6 +22,7 @@ class Post extends Model
     public function getIdHashAttribute(){
         return encrypt_decrypt('encrypt', $this->id);;
     }
+    
     // public function commentUser(){
     //     return $this->hasManyThrough(User::class, Comment::class, 'post_id', 'post_id');
     // }
